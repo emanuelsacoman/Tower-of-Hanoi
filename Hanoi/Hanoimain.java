@@ -9,7 +9,7 @@ public class Hanoimain {
 
     public static void main(String[] args) {
         int discos = 0;
-        int rMDes = 0;// radio del mayor disco descolocado
+        int rMDes = 0;
         int id=0;
         int heuristica=0;
         int movimentos = 0;
@@ -24,18 +24,16 @@ public class Hanoimain {
         System.out.printf("Coloque o numero de discos que deseja: ");
         discos= sc.nextInt();
         rMDes = discos;
-        //System.out.printf("%d discos deseados\n",discos);
         heuristica = (int) Math.pow(2, rMDes-1);
 
-        //Creación del estado inicial
         for (int i=discos;i>0;i--){
             colunaA.add(i);
             colunaC.add(i);
         }
 
-        Estado estadoInicial = new Estado(0, 0, movimentos, heuristica);// De este estado  partimos para hacer cosas
+        Estado estadoInicial = new Estado(0, 0, movimentos, heuristica);
         estadoInicial.setColA(colunaA);
-        Estado estadoFinal = new Estado(-1, -1, movimentos, heuristica);// De este estado  partimos para hacer cosas
+        Estado estadoFinal = new Estado(-1, -1, movimentos, heuristica);
         estadoFinal.setColC(colunaC);
         abertos.add(estadoInicial);
 
@@ -87,10 +85,9 @@ public class Hanoimain {
                         siguienteizder.setId(id);
                         siguienteizder.setAnterior(atual.getId());
                         siguienteizder.setG(atual.getG()+1);
-                        //Control de si disco colocado es rmDes
                         if(!siguienteizder.getColC().isEmpty()){
                             if(rMDes == siguienteizder.getColC().get(siguienteizder.getColC().size()-1)){
-                                System.out.println("Coloque el rmdes");
+                                System.out.println("Coloque o rmdes");
                                 maiorDiscoColocadoEmC=rMDes;
                                 rMDes = rMDes - 1;
                                 heuristica = (int) Math.pow(2, rMDes-1);
@@ -124,8 +121,7 @@ public class Hanoimain {
                         Collections.sort(abertos, MakeComparator);
                     }
                 }
-
-                //Control de no estar haciendo movimiento innecesario moviendo el mayor disco colocado en C
+                
                 if(!atual.getColC().isEmpty()){
                     if(maiorDiscoColocadoEmC!=atual.getColC().get(atual.getColC().size()-1)){
                         siguientederiz = der_a_izq(atual);
@@ -142,7 +138,7 @@ public class Hanoimain {
                     }
                 }
             }
-        }// fin while
+        }
 
         mostrarCaminho(fechados);
     }
@@ -252,7 +248,7 @@ public class Hanoimain {
                 nuevo.getColA().add(discoAMover);
                 nuevo.getColB().remove(actual.getColB().size()-1);
                 return nuevo;
-            }//Columna destino tiene un disco ver si movimiento es posible en función de tamaño
+            }
             else{
                 discoEnDestino = actual.getColA().get(actual.getColA().size()-1);
                 if(discoAMover<discoEnDestino){
@@ -276,13 +272,13 @@ public class Hanoimain {
         if(actual.getColB().isEmpty()){
             return null;
         }
-        else{//Columna origen no vacia cojo el disco de arriba que es el que moveremos
+        else{
             discoAMover = actual.getColB().get(actual.getColB().size()-1);
             if(actual.getColC().isEmpty()){
                 nuevo.getColC().add(discoAMover);
                 nuevo.getColB().remove(actual.getColB().size()-1);
                 return nuevo;
-            }//Columna destino tiene un disco ver si movimiento es posible en función de tamaño
+            }
             else{
                 discoEnDestino = actual.getColC().get(actual.getColC().size()-1);
                 if(discoAMover<discoEnDestino){
@@ -302,19 +298,17 @@ public class Hanoimain {
 
         nuevo = new Estado(-1,-1,actual.getG()+1, actual.getH());
         nuevo = setValuesEstado(nuevo, actual);
-        //nuevo.setG(nuevo.getG()+1);
 
         if(actual.getColC().isEmpty()){
             return null;
         }
-        else{//Columna origen no vacia cojo el disco de arriba que es el que moveremos
+        else{
             discoAMover = actual.getColC().get(actual.getColC().size()-1);
             if(actual.getColA().isEmpty()){
-                //Movimiento posible porque destino no tiene discos
                 nuevo.getColA().add(discoAMover);
                 nuevo.getColC().remove(actual.getColC().size()-1);
                 return nuevo;
-            }//Columna destino tiene un disco ver si movimiento es posible en función de tamaño
+            }
             else{
                 discoEnDestino = actual.getColA().get(actual.getColA().size()-1);
                 if(discoAMover<discoEnDestino){
@@ -334,18 +328,17 @@ public class Hanoimain {
 
         nuevo = new Estado(-1,-1,actual.getG()+1, actual.getH());
         nuevo = setValuesEstado(nuevo, actual);
-        //nuevo.setG(nuevo.getG()+1);
         if(actual.getColC().isEmpty()){
             return null;
         }
-        else{//Columna origen no vacia cojo el disco de arriba que es el que moveremos
+        else{
             discoAMover = actual.getColC().get(actual.getColC().size()-1);
             if(actual.getColB().isEmpty()){
                 //Movimiento posible porque destino no tiene discos
                 nuevo.getColB().add(discoAMover);
                 nuevo.getColC().remove(actual.getColC().size()-1);
                 return nuevo;
-            }//Columna destino tiene un disco ver si movimiento es posible en función de tamaño
+            }
             else{
                 discoEnDestino = actual.getColB().get(actual.getColB().size()-1);
                 if(discoAMover<discoEnDestino){
